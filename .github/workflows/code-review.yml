@@ -46,13 +46,8 @@ jobs:
       - name: Debug Printing code_review.md
         id: review_output_debug
         run: cat code_review.md
-        
-      # Step 6: Read `code_review.md` content into an output variable
-      - name: Read Code Review Output
-        id: review_output
-        run: echo "REVIEW_CONTENT=`$(cat code_review.md)`" >> "$GITHUB_ENV"
 
-      # Step 7: Post the review as a comment on the pull request
+      # Step 6: Post the review as a comment on the pull request
       - name: Post Review as Comment
         uses: peter-evans/create-or-update-comment@v3
         with:
