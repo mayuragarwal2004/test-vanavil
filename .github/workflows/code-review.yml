@@ -1,0 +1,41 @@
+name: Perplexity Code Review Bot
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Fetch the pull request diff
+      - name: Get PR Diff
+        run: git diff origin/main...HEAD > pr_diff.txt
+
+      # Step 3: Install Python dependencies (e.g., requests)
+      - name: Set up Python and install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      # Step 4: Run the code review script
+      - name: Run Perplexity AI Code Review
+        env:
+          PERPLEXITY_API_TOKEN: ${{ secrets.PERPLEXITY_API_TOKEN }}  # Store API token in GitHub secrets
+        run: python .github/scripts/code_review.py
+
+      # Step 5: Post the review as a comment on the pull request
+      - name: Post Review as Comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Perplexity AI Code Review
+            $(cat code_review.md)
