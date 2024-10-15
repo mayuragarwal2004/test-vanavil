@@ -21,7 +21,7 @@ jobs:
 
       # Step 3: Get PR Diff
       - name: Get PR Diff
-        run: git diff origin/main...HEAD > pr_diff.txt
+        run: git diff origin/main > pr_diff.txt
 
       # Step 4: Install Python dependencies (e.g., requests)
       - name: Set up Python and install dependencies
