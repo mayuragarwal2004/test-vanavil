@@ -25,6 +25,11 @@ jobs:
       - name: Get PR Diff
         run: git diff origin/main > pr_diff.txt
 
+      # debug
+      - name: Debug Printing pr_diff.txt
+        id: pr_diff_debug
+        run: cat pr_diff.txt
+        
       # Step 4: Install Python dependencies (e.g., requests)
       - name: Set up Python and install dependencies
         run: |
@@ -38,7 +43,7 @@ jobs:
         run: python .github/scripts/code_review.py
 
       # debug
-      - name: Read Code Review Output
+      - name: Debug Printing code_review.md
         id: review_output_debug
         run: cat code_review.md
         
