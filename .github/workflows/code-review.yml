@@ -49,15 +49,8 @@ jobs:
 
       # Step 7: Post the review as a comment on the pull request
       - name: Post Review as Comment
-        uses: actions/github-script@v6
+        uses: peter-evans/create-or-update-comment@v3
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const fs = require('fs');
-            const reviewContent = fs.readFileSync('code_review.md', 'utf8');
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.name,
-              issue_number: context.payload.pull_request.number,
-              body: reviewContent
-            });
+          issue-number: ${{ github.event.pull_request.number }}
+          body-file: code_review.md
+          token: ${{ secrets.GITHUB_TOKEN }}
