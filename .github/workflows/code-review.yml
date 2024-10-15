@@ -36,6 +36,11 @@ jobs:
           PERPLEXITY_API_TOKEN: ${{ secrets.PERPLEXITY_API_TOKEN }}
         run: python .github/scripts/code_review.py
 
+      # debug
+      - name: Read Code Review Output
+        id: review_output_debug
+        run: cat code_review.md
+        
       # Step 6: Read `code_review.md` content into an output variable
       - name: Read Code Review Output
         id: review_output
