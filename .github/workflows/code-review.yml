@@ -55,4 +55,4 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ## Perplexity AI Code Review
-            ${{ $(cat code_review.md) }}
+            $(cat code_review.md)
