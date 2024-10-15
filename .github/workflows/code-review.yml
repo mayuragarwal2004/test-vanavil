@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all branches to ensure we have access to origin/main
 
-      # Step 2: Fetch and set up the main branch
+      # Step 2: Fetch all branches
       - name: Fetch all branches
         run: git fetch --all
 
@@ -36,7 +36,12 @@ jobs:
           PERPLEXITY_API_TOKEN: ${{ secrets.PERPLEXITY_API_TOKEN }}
         run: python .github/scripts/code_review.py
 
-      # Step 6: Post the review as a comment on the pull request
+      # Step 6: Read `code_review.md` content into an output variable
+      - name: Read Code Review Output
+        id: review_output
+        run: echo "REVIEW_CONTENT=$(cat code_review.md)" >> $GITHUB_ENV
+
+      # Step 7: Post the review as a comment on the pull request
       - name: Post Review as Comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -45,4 +50,4 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ## Perplexity AI Code Review
-            $(cat code_review.md)
+            ${{ env.REVIEW_CONTENT }}
