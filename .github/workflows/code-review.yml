@@ -48,11 +48,15 @@ jobs:
 
       # Step 7: Post the review as a comment on the pull request
       - name: Post Review as Comment
-        uses: peter-evans/create-or-update-comment@v3
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ## Perplexity AI Code Review
-            ${{ env.REVIEW_CONTENT }}
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+            const reviewContent = fs.readFileSync('code_review.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              body: reviewContent
+            });
