@@ -38,7 +38,8 @@ response = requests.post("https://api.perplexity.ai/chat/completions", json=payl
 # Check if the response was successful
 if response.status_code == 200:
     # Get the code review from the response
-    review = response.json().get("choices", [{}])[0].get("content", "No response from Perplexity AI.")
+    result = response.json()
+    review = result['choices'][0]['message']['content']
 else:
     review = f"Error: Unable to get a response from Perplexity AI. Status code: {response.status_code}"
 
